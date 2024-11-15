@@ -1,0 +1,35 @@
+default:
+  db_name: "tree_site_info_db"
+  db_port: 3308
+  db_host: "example.com"
+  db_user: "fake-user"
+  db_password: "fake-password"
+  tbl_name: "dendro_sites_test"
+  audit: "dendro_sites_audit"
+  login: "http://example.com/webapi/auth.cgi?api=SYNO.API.Auth&method=login&version=2&account=fake-account&passwd=fake-password&session=FileStation&format=cookie&enable_syno_token=yes"
+  file_path: "/Fake%20Storage/Tree-Ring%20Data/Current%20Sites%20-%20Fake"
+  wrkdir: "http://example.com/webapi/entry.cgi?"
+
+testing:
+  db_name: "tree_site_info_db"
+  db_port: 3308
+  db_host: "example.com"
+  db_user: "fake-user"
+  db_password: "fake-password"
+  tbl_name: "dendro_sites"
+  audit: "dendro_sites_audit"
+  login: "http://example.com/webapi/auth.cgi?api=SYNO.API.Auth&method=login&version=2&account=fake-account&passwd=fake-password&session=FileStation&format=cookie&enable_syno_token=yes"
+  file_path: "/Fake%20Storage/Tree-Ring%20Data/Current%20Sites%20-%20Fake"
+  wrkdir: "http://example.com/webapi/entry.cgi?"
+
+production:
+  db_name: "tree_site_info_db"
+  db_port: 3308
+  db_host: "localhost"
+  db_user: "fake-user"
+  db_password: "fake-password"
+  tbl_name: "dendro_sites"
+  audit: "dendro_sites_audit"
+  login: "http://example.com/webapi/auth.cgi?api=SYNO.API.Auth&method=login&version=2&account=fake-account&passwd=fake-password&session=FileStation&format=cookie&enable_syno_token=yes"
+  file_path: "/Fake%20Storage/Tree-Ring%20Data/Current%20Sites%20-%20Fake"
+  wrkdir: "http://example.com/webapi/entry.cgi?"
