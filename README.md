@@ -17,3 +17,7 @@ The Tree History and Table Shiny App is designed to display and manage tree data
 ## Installation
 
 This app is hosted in docker containers located on the NAS and can be accessed from the NAS by click on the icon labeled db_interface
+
+
+![Alt text](images/data_table)
+The basic interface shows the rendered data table with buttons for adding sites and viewing the history of changes. The buttons in the first column allow a user to edit, delete, and view the read me for the individual sites.
