@@ -27,9 +27,15 @@ This app is hosted in docker containers located on the NAS and can be accessed f
 The basic interface shows the rendered data table with buttons for adding sites and viewing the history of changes. The buttons in the first column allow a user to edit, delete, and view the Read Me for the individual sites.
 
 <br/>
-
+<br/>
+<br/>
 
 ![Alt text](images/add_site_modal.png)
-Users can select the button to add the site which will display this modal allowing the user to fill out key data like name, location, basin, etc. This will also force the user to select a site code which must be unique in order for the user to be able to submit this site to the database. This maintains database integrity by removing the chance of having identical site codes
+Users can select the button to add the site which will display this modal allowing the user to fill out key data like name, location, basin, etc. This will also force the user to select a site code which must be unique in order for the user to be able to submit this site to the database. This maintains database integrity by removing the chance of having identical site codes.
 
+<br/>
+<br/>
+<br/>
 
+![Alt text](images/log_modal.png)
+When users make a change (edit/delete/add) they are prompted to input their name and any notes on the changes that they made so that this can be referred back to if needed.
