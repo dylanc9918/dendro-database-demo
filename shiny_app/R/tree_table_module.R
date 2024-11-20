@@ -189,42 +189,59 @@ tree_table_module <- function(input, output, session) {
 
   # GET request to the correct site based on selected ID from datatable
   site_link <- function(id) {
+    ## login to synology server
     login_resp <- GET(config$login)
 
 
+    ## extract the content from the login response
     login_code <- fromJSON(content(login_resp))
 
+    ## extract the synotoken and sid from the login response to authorize future requests
     synotoken <- login_code$data$synotoken
     sid <- login_code$data$sid
 
-
+    ## create the wrkdir for the synology server
     wrkdir <- paste0(config$wrkdir, "api=SYNO.FileStation.List&method=list&version=2&SynoToken=", synotoken, "&folder_path=", config$file_path, "/")
 
+    ## create the open file reqeust for the current wrkdir
     open_file <- paste0(config$wrkdir, "api=SYNO.FileStation.Download&method=download&version=2&SynoToken=", synotoken, "&mode=open&path=", config$file_path, "/")
 
-
+    # actually lists the files in the folder current-sites
     response <- GET(paste0(config$wrkdir, "api=SYNO.FileStation.List&method=list&version=2&SynoToken=", synotoken, "&folder_path=", config$file_path))
 
 
 
+    # extracts all the site codes from current sites
     site_files <- file_extractor(response)
 
+
+    # find the sites that are not zipped
     site_no_zip <- subset(site_files, !grepl("\\.zip$", site_files, ignore.case = TRUE))
 
+
+    # find the folder associated with the site code selected by user (id)
     site_code <- site_no_zip[grepl(id, site_no_zip)]
 
+    # create the url that will be used to actually get the content of the file selected
     api_code_list <- sapply(unname(site_code), function(x) paste0(wrkdir, x))
 
+
+    # GET request to the site code selected by user
     dir_list <- GET(paste0(wrkdir, id))
 
+    # use the file extractor function to extract the file names in the folder selected
     dir_files <- file_extractor(dir_list)
 
+    # find the read me and extracte the exact file name
     readme_file <- dir_files[grepl("READ", dir_files, ignore.case = TRUE)]
 
+    # create the URL
     readme_url <- paste0(open_file, site_code, "/", readme_file)
 
+    # GET request to the readme file
     response <- GET(URLencode(URLdecode(readme_url)))
 
+    # get the content
     content <- content(response)
 
     return(content)
