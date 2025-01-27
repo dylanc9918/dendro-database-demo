@@ -231,6 +231,9 @@ tree_edit_module <- function(input, output, session, modal_title, tree_to_edit, 
 
   # observe the submit button being clicked to add or edit row and show the log modal
   observeEvent(input$submit, {
+    req(validate_edit()) # make sure the user has filled out the form correctly (no special characters)
+
+
     showModal(user_modal())
   })
 
@@ -245,10 +248,23 @@ tree_edit_module <- function(input, output, session, modal_title, tree_to_edit, 
 
 
   # registering that the user has clicked submit on the user log modal so we can make this change to the database
-  validate_edit <- eventReactive(input$submit_user, {
+  validate_edit <- eventReactive(input$submit, {
     dat <- edit_tree_dat()
 
-    dat
+    only_text_items <- Filter(is.character, dat$data)
+
+
+
+    special_str <- lapply(only_text_items, function(x) { # find if there are special strings
+      grepl("[^A-Za-z0-9 ]", x)
+    })
+
+    if (sum(unlist(special_str)) > 0) {
+      showToast("error", "Special characters are not allowed")
+      return(FALSE)
+    } else {
+      return(TRUE)
+    }
   })
 
   # once the user has clicked submit on the user log modal display who has made the change and remove log modal
@@ -260,10 +276,11 @@ tree_edit_module <- function(input, output, session, modal_title, tree_to_edit, 
   })
 
 
-  # log the change with a timestamp and the correct action and based on teh action
-  observeEvent(validate_edit(), {
+  # log the change with a timestamp and the correct action and based on the action
+  observeEvent(input$submit_user, {
+    req(validate_edit())
     removeModal()
-    dat <- validate_edit()
+    dat <- edit_tree_dat()
     time_now <- as.character(lubridate::with_tz(Sys.time(), tzone = "UTC"))
 
     if (modal_title == "Add Site") {
@@ -271,7 +288,6 @@ tree_edit_module <- function(input, output, session, modal_title, tree_to_edit, 
     } else {
       action <- "edit"
     }
-    browser()
 
     tryCatch(
       {
